@@ -22,12 +22,12 @@ var totalQuestions = quiz.length;
 poseQuestion(quizIndex);
 
 function poseQuestion(quizIndex) {
+
 		if (quizIndex==totalQuestions) {
-        //loadScore();
-        alert('load score');
+        loadScore();
 				return;
     }
-
+		
 	  drawQuestion();
 		drawAnswers();
 		listenForAnswer();
@@ -39,12 +39,11 @@ function update() {
     if (document.getElementById(correctAnswer).checked) {
         score++;
     }
-    clearQuestion();
-		quizIndex++;
-   	poseQuestion(quizIndex);
+    clear();
+   	poseQuestion(++quizIndex);
 }
 
-function clearQuestion(){
+function clear(){
     document.getElementById("questionHolder").innerHTML = "";
     document.getElementById("answersHolder").innerHTML = "";
 		document.getElementById("nextHolder").innerHTML = "";
@@ -77,12 +76,11 @@ function drawAnswers() {
         var radioLabel = document.createElement('label');
         radioLabel.appendChild(answerNode);
         p.appendChild(radioLabel);
-        
+      
         var answerHolder = document.getElementById("answersHolder");
         answerHolder.appendChild(p);
     }
 }
-
 
 function listenForAnswer() {
 		var a = document.createElement('a');
@@ -94,4 +92,10 @@ function listenForAnswer() {
 
     var nextListener = document.getElementById("next");	
     nextListener.addEventListener('click', function() { update(); }, false);
-}	
+}
+
+function loadScore() {
+		var scoreHolder = document.getElementById("scoreHolder");
+		scoreNode = document.createTextNode(score);
+		scoreHolder.appendChild(scoreNode);
+}
