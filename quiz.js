@@ -2,12 +2,12 @@ var score = 0;
 var quiz = [
     {
         question:"What\'s the most expensive film ever made?",
-        answers:['Pirates of the Carabian', 'Tangled', 'Waterworld','Avatar'],
+        answers:['Pirates of the Caribbean', 'Tangled', 'Waterworld','Avatar'],
         correctAnswer:0
     },
     {
         question: "What\'s the worst film ever made?",
-        answers: ['Pirates of the Carabian', 'Twightlight', 'Waterworld','Sharknado'],
+        answers: ['Twilight', 'Pirates of the Caribbean', 'Waterworld','Sharknado'],
         correctAnswer: 3
     },
     {
@@ -19,17 +19,45 @@ var quiz = [
 var quizIndex = 0;
 var totalQuestions = quiz.length;
 
-loadQuestion(quizIndex);
+poseQuestion(quizIndex);
 
-function loadQuestion(quizIndex) {
-    
-    //Question
+function poseQuestion(quizIndex) {
+		if (quizIndex==totalQuestions) {
+        //loadScore();
+        alert('load score');
+				return;
+    }
+
+	  drawQuestion();
+		drawAnswers();
+		listenForAnswer();
+}
+
+
+function update() {
+    correctAnswer = quiz[quizIndex].correctAnswer;
+    if (document.getElementById(correctAnswer).checked) {
+        score++;
+    }
+    clearQuestion();
+		quizIndex++;
+   	poseQuestion(quizIndex);
+}
+
+function clearQuestion(){
+    document.getElementById("questionHolder").innerHTML = "";
+    document.getElementById("answersHolder").innerHTML = "";
+		document.getElementById("nextHolder").innerHTML = "";
+}
+
+function drawQuestion() {
     var currentQuestion = quiz[quizIndex].question;
     var questionNode = document.createTextNode(currentQuestion);
     var questionHolder = document.getElementById("questionHolder");
     questionHolder.appendChild(questionNode);
-    
-    //Answers
+}
+
+function drawAnswers() {
     var totalAnswers = quiz[quizIndex].answers.length;
     for (var i=0; i<totalAnswers; i++ ) {
         var currentAnswer = quiz[quizIndex].answers[i];
@@ -53,31 +81,17 @@ function loadQuestion(quizIndex) {
         var answerHolder = document.getElementById("answersHolder");
         answerHolder.appendChild(p);
     }
-    
-    //Next
-    var next = document.getElementById("next");
-    next.addEventListener('click', function() { update(); }, false);    
 }
 
 
-function update() {
-    correctAnswer = quiz[quizIndex].correctAnswer;
-    if (document.getElementById(correctAnswer).checked) {
-        score++;
-    }
-    clearQuestion();
-    if (quizIndex==totalQuestions) {
-        //loadScore();
-        alert('load score');
-    }
-    else {
-        quizIndex++;
-        loadQuestion(quizIndex);
-    }
-}
+function listenForAnswer() {
+		var a = document.createElement('a');
+		var nextNode = document.createTextNode("NEXT");
+		a.appendChild(nextNode);
+		a.id = "next";
+		var nextHolder = document.getElementById("nextHolder");
+		nextHolder.appendChild(a);
 
-function clearQuestion(){
-    document.getElementById("questionHolder").innerHTML = "";
-    document.getElementById("answersHolder").innerHTML = "";
-}
-
+    var nextListener = document.getElementById("next");	
+    nextListener.addEventListener('click', function() { update(); }, false);
+}	
