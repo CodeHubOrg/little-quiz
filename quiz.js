@@ -96,6 +96,6 @@ function listenForAnswer() {
 
 function loadScore() {
 		var scoreHolder = document.getElementById("scoreHolder");
-		scoreNode = document.createTextNode(score);
+		scoreNode = document.createTextNode("You answered " + score + " out of " + totalQuestions + " questions correctly.");
 		scoreHolder.appendChild(scoreNode);
 }
